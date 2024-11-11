@@ -30,6 +30,10 @@ then
                         (mkfs.exfat /dev/mmcblk0p3) &
                         sleep 1
                 fi
+        fi
+
+        if [ -e /dev/mmcblk0p3 ]
+        then
                 mkdir -p /data
                 mount /dev/mmcblk0p3 /data
         fi

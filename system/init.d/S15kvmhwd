@@ -21,6 +21,11 @@ case "$1" in
       mkdir /etc/kvm/
     fi
     
+    devmem 0x0300104C 32 0x3  # GPIOA26 / WiFi_EN
+    echo ${WiFi_EN_Pin} > /sys/class/gpio/export  # WiFi_EN
+    echo out > /sys/class/gpio/gpio${WiFi_EN_Pin}/direction
+    echo 0 > /sys/class/gpio/gpio${WiFi_EN_Pin}/value
+
     devmem 0x030010D0 32 0x2  # I2C1_SCL
     devmem 0x030010DC 32 0x2  # I2C1_SDA
     devmem 0x030010D4 32 0x3  # OLED_RST
@@ -29,16 +34,12 @@ case "$1" in
     devmem 0x0300105C 32 0x3  # GPIOA23
     devmem 0x03001060 32 0x3  # GPIOA24
     devmem 0x03001054 32 0x3  # GPIOA25
-    devmem 0x0300104C 32 0x3  # GPIOA26 / WiFi_EN
     devmem 0x03001058 32 0x3  # GPIOA27
     echo ${Alpha_OLED_RST_Pin} > /sys/class/gpio/export  # OLED_RST
-    echo ${WiFi_EN_Pin} > /sys/class/gpio/export  # WiFi_EN
 
     echo out > /sys/class/gpio/gpio${Alpha_OLED_RST_Pin}/direction
-    echo out > /sys/class/gpio/gpio${WiFi_EN_Pin}/direction
 
     echo 1 > /sys/class/gpio/gpio${Alpha_OLED_RST_Pin}/value
-    echo 0 > /sys/class/gpio/gpio${WiFi_EN_Pin}/value
 
     kvm_tmp=$(i2cdetect -ry 1 0x3d 0x3d | grep 3d)
     if [ -n "$kvm_tmp" ]
@@ -61,8 +62,6 @@ case "$1" in
       rmmod /mnt/system/ko/i2c-gpio.ko
       rmmod /mnt/system/ko/i2c-algo-bit.ko
     else
-      echo 1 > /sys/class/gpio/gpio${WiFi_EN_Pin}/value
-      echo ${WiFi_EN_Pin} > /sys/class/gpio/unexport  # WiFi_EN
       # beta hw
       echo "beta" > /etc/kvm/hw
 
@@ -73,6 +72,9 @@ case "$1" in
       devmem 0x030010D8 32 0x0  # SDIO D1
       devmem 0x030010D4 32 0x0  # SDIO D2
       devmem 0x030010D0 32 0x0  # SDIO D3
+
+      echo 1 > /sys/class/gpio/gpio${WiFi_EN_Pin}/value
+      echo ${WiFi_EN_Pin} > /sys/class/gpio/unexport  # WiFi_EN
 
       echo ${Beta_PWR_LED_Pin} > /sys/class/gpio/export   # pwr led
       echo ${Beta_PWR_KEY_Pin} > /sys/class/gpio/export   # pwr key
@@ -97,6 +99,11 @@ case "$1" in
       insmod /mnt/system/ko/i2c-algo-bit.ko
       insmod /mnt/system/ko/i2c-gpio.ko
       echo 1 > /sys/class/gpio/gpio${Beta_OLED_RST_Pin}/value
+      kvm_tmp=$(i2cdetect -ry 5 0x3c 0x3c | grep 3c)
+      if [ -n "$kvm_tmp" ]
+      then
+        echo "pcie" > /etc/kvm/hw
+      fi
     fi
     sync
   ;;
