@@ -25,6 +25,7 @@ case "$1" in
     echo ${WiFi_EN_Pin} > /sys/class/gpio/export  # WiFi_EN
     echo out > /sys/class/gpio/gpio${WiFi_EN_Pin}/direction
     echo 0 > /sys/class/gpio/gpio${WiFi_EN_Pin}/value
+    sleep 0.5
 
     devmem 0x030010D0 32 0x2  # I2C1_SCL
     devmem 0x030010DC 32 0x2  # I2C1_SDA
@@ -61,6 +62,9 @@ case "$1" in
 
       rmmod /mnt/system/ko/i2c-gpio.ko
       rmmod /mnt/system/ko/i2c-algo-bit.ko
+
+      rm /etc/init.d/S25wifimod
+      rm /etc/init.d/S30wifi
     else
       # beta hw
       echo "beta" > /etc/kvm/hw
@@ -103,7 +107,17 @@ case "$1" in
       if [ -n "$kvm_tmp" ]
       then
         echo "pcie" > /etc/kvm/hw
+      else
+        rm /etc/init.d/S25wifimod
+        rm /etc/init.d/S30wifi
       fi
+    fi
+    kvm_tmp=$(i2cdetect -ry 4 0x2c 0x2c | grep 2c)
+    if [ -n "$kvm_tmp" ]
+    then
+      echo "c" > /etc/kvm/hdmi_version
+    else
+      echo "u" > /etc/kvm/hdmi_version
     fi
     sync
   ;;

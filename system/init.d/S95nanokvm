@@ -36,50 +36,50 @@ case "$1" in
     cp -r /kvmapp/kvm_system /tmp/
     /tmp/kvm_system/kvm_system &
 
-    if [ -e /kvmapp/kvm_stream ]
-    then
-      cp -r /kvmapp/kvm_stream /tmp/
-      /tmp/kvm_stream/kvm_stream &
-    fi
+    # if [ -e /kvmapp/kvm_stream ]
+    # then
+    #   cp -r /kvmapp/kvm_stream /tmp/
+    #   /tmp/kvm_stream/kvm_stream &
+    # fi
     
     cp -r /kvmapp/server /tmp/
     /tmp/server/NanoKVM-Server &
   ;;
   stop)
     killall kvm_system
-    killall kvm_stream
+    # killall kvm_stream
     killall NanoKVM-Server
     rm -r /tmp/kvm_system
-    rm -r /tmp/kvm_stream
+    # rm -r /tmp/kvm_stream
     rm -r /tmp/server
     echo "OK"
   ;;
-  restart_stream)
-    killall kvm_stream
-    rm -r /tmp/kvm_stream
-    if [ -e /kvmapp/kvm_stream ]
-    then
-      cp -r /kvmapp/kvm_stream /tmp/
-      /tmp/kvm_stream/kvm_stream &
-      echo "OK"
-    fi
-  ;;
+  # restart_stream)
+  #   killall kvm_stream
+  #   rm -r /tmp/kvm_stream
+  #   if [ -e /kvmapp/kvm_stream ]
+  #   then
+  #     cp -r /kvmapp/kvm_stream /tmp/
+  #     /tmp/kvm_stream/kvm_stream &
+  #     echo "OK"
+  #   fi
+  # ;;
   restart)
     killall kvm_system
-    killall kvm_stream
+    # killall kvm_stream
     killall NanoKVM-Server
     rm -r /tmp/kvm_system
-    rm -r /tmp/kvm_stream
+    # rm -r /tmp/kvm_stream
     rm -r /tmp/server
     
     cp -r /kvmapp/kvm_system /tmp/
     /tmp/kvm_system/kvm_system &
 
-    if [ -e /kvmapp/kvm_stream ]
-    then
-      cp -r /kvmapp/kvm_stream /tmp/
-      /tmp/kvm_stream/kvm_stream &
-    fi
+    # if [ -e /kvmapp/kvm_stream ]
+    # then
+    #   cp -r /kvmapp/kvm_stream /tmp/
+    #   /tmp/kvm_stream/kvm_stream &
+    # fi
     
     cp -r /kvmapp/server /tmp/
     /tmp/server/NanoKVM-Server &
