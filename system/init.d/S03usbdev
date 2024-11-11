@@ -42,7 +42,7 @@ then
 
     # keyboard
     mkdir functions/hid.GS0
-    # echo 1 > functions/hid.GS0/subclass
+    echo 1 > functions/hid.GS0/subclass
     echo 1 > functions/hid.GS0/wakeup_on_write
     echo 1 > functions/hid.GS0/protocol
     echo 6 > functions/hid.GS0/report_length
