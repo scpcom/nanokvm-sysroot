@@ -63,11 +63,11 @@ case "$1" in
       rmmod /mnt/system/ko/i2c-gpio.ko
       rmmod /mnt/system/ko/i2c-algo-bit.ko
 
-      rm /etc/init.d/S25wifimod
-      rm /etc/init.d/S30wifi
+      # rm /etc/init.d/S25wifimod
+      # rm /etc/init.d/S30wifi
     else
       # beta hw
-      echo "beta" > /etc/kvm/hw
+      echo "beta-" > /etc/kvm/hw
 
       # SDIO
       devmem 0x030010E4 32 0x0  # SDIO CLK
@@ -108,8 +108,9 @@ case "$1" in
       then
         echo "pcie" > /etc/kvm/hw
       else
-        rm /etc/init.d/S25wifimod
-        rm /etc/init.d/S30wifi
+        echo "beta" > /etc/kvm/hw
+        # rm /etc/init.d/S25wifimod
+        # rm /etc/init.d/S30wifi
       fi
     fi
     kvm_tmp=$(i2cdetect -ry 4 0x2c 0x2c | grep 2c)
