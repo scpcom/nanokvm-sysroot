@@ -11,34 +11,27 @@ then
     # echo 0x1009 > idProduct
     # mkdir strings/0x409
     # echo '0123456789ABCDEF' > strings/0x409/serialnumber
-    # echo 'sipeed' > strings/0x409/manufacturer
+    # echo 'flyingrtx' > strings/0x409/manufacturer
     # echo 'licheervnano' > strings/0x409/product
 
     echo 0x3346 > idVendor
     echo 0x1009 > idProduct
     mkdir strings/0x409
     echo '0123456789ABCDEF' > strings/0x409/serialnumber
-    echo 'flyingrtx' > strings/0x409/manufacturer
-    echo 'licheervnano' > strings/0x409/product
+    echo 'sipeed' > strings/0x409/manufacturer
+    echo 'NanoKVM' > strings/0x409/product
 
     mkdir configs/c.1
     echo 0xE0 > configs/c.1/bmAttributes
     echo 120 > configs/c.1/MaxPower
     mkdir configs/c.1/strings/0x409
-    echo "licheervnano" >  configs/c.1/strings/0x409/configuration
+    echo "NanoKVM" >  configs/c.1/strings/0x409/configuration
 
-#     if [ -e /boot/usb.GS0 ]
-#     then
-#             mkdir functions/acm.GS0
-#             ln -s functions/acm.GS0 configs/c.1/
-#     fi
     if [ -e /boot/usb.rndis0 ]
     then
             mkdir functions/rndis.usb0
             ln -s functions/rndis.usb0 configs/c.1/
     fi
-
-
 
     # keyboard
     mkdir functions/hid.GS0
