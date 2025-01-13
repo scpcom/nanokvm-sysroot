@@ -1,5 +1,5 @@
 #!/bin/sh
-# kvmhwd Rev2.2
+# kvmhwd Rev2.3
 
 Alpha_OLED_RST_Pin=371
 Beta_OLED_RST_Pin=502
@@ -95,6 +95,10 @@ init_beta_pcie_hw(){
 }
 
 kvm_hw_detect(){
+  if [ ! -e /etc/kvm/hdmi_version ]
+  then
+    rm /etc/kvm/hw
+  fi
   if [ -e /etc/kvm/hw ]
   then
     echo "/etc/kvm/hw exist"

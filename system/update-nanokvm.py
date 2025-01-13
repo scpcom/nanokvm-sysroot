@@ -97,7 +97,7 @@ def change_permissions():
             os.chmod(file_path, 0o755)
 
     print("change permissions done")
-
+ 
 
 def main():
     try:

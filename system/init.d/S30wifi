@@ -58,6 +58,7 @@ start() {
     then
         pass=`cat /etc/kvm/wifi.pass`
     fi
+    echo "ctrl_interface=/var/run/wpa_supplicant" > /etc/wpa_supplicant.conf
     wpa_passphrase "$ssid" "$pass" >> /etc/wpa_supplicant.conf
     wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
     if [ ! -e /boot/wifi.nodhcp ]
