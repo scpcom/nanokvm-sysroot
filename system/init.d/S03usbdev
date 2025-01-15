@@ -118,3 +118,11 @@ then
         echo '' > /sys/kernel/config/usb_gadget/g0/UDC
         echo host > /proc/cviusb/otg_role
 fi
+
+if [ "$1" = "restart" ]
+then
+    echo > /sys/kernel/config/usb_gadget/g0/UDC
+    sleep 1
+    ls /sys/class/udc/ | cat > /sys/kernel/config/usb_gadget/g0/UDC
+    echo "USB Restart OK!"
+fi

@@ -36,6 +36,14 @@ EOF
 
 case "$1" in
         start)
+                if [ -f /etc/kvm/GOMEMLIMIT ]; then
+                     value=$(cat /etc/kvm/GOMEMLIMIT)
+                     export GOMEMLIMIT="${value}MiB"
+                else
+                     export GOMEMLIMIT=1024MiB
+                fi
+                
+                echo "GOMEMLIMIT set to ${GOMEMLIMIT}"
                 printf "Starting $DAEMON[$VERSION]: "
                 start-stop-daemon -S -bmq -p "$PIDFILE" -x "/usr/sbin/$DAEMON" -- \
                     --state=/var/lib/tailscale/tailscaled.state \
