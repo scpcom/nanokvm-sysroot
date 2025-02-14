@@ -108,7 +108,7 @@ def main():
 
         mkdir()
         download_firmware()
-        download_lib()
+        # download_lib()
         update()
         change_permissions()
 

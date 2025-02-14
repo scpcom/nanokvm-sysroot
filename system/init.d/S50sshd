@@ -52,8 +52,16 @@ case "$1" in
   restart|reload)
 	restart
 	;;
+  permanent_on)
+    rm /etc/kvm/ssh_stop
+	start
+    ;;
+  permanent_off)
+    touch /etc/kvm/ssh_stop
+	stop
+    ;;
   *)
-	echo "Usage: $0 {start|stop|restart}"
+	echo "Usage: $0 {start|stop|restart|permanent_on|permanent_off}"
 	exit 1
 esac
 
