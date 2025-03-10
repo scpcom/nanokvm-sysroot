@@ -23,33 +23,44 @@ gen_hostapd_conf() {
 }
 
 gen_udhcpd_conf() {
-        interface=${1}
-        ipv4_prefix=${2}
-        echo "start ${ipv4_prefix}.100"
-        echo "end ${ipv4_prefix}.200"
-        echo "interface ${interface}"
-        echo "pidfile /var/run/udhcpd.${interface}.pid"
-        echo "lease_file /var/lib/misc/udhcpd.${interface}.leases"
-        echo "option subnet 255.255.255.0"
-        echo "option lease 864000"
+    interface=${1}
+    ipv4_prefix=${2}
+    echo "start ${ipv4_prefix}.100"
+    echo "end ${ipv4_prefix}.200"
+    echo "interface ${interface}"
+    echo "pidfile /var/run/udhcpd.${interface}.pid"
+    echo "lease_file /var/lib/misc/udhcpd.${interface}.leases"
+    echo "option subnet 255.255.255.0"
+    echo "option lease 864000"
 }
 
 gen_dnsmasq_conf() {
-        ipv4_prefix=${1}
-        echo "bind-interfaces"
-        echo "interface=wlan0"
-        echo "address=/config.kvm/${ipv4_prefix}.1"
-        echo "no-hosts"
-        echo "dhcp-range=${ipv4_prefix}.2,${ipv4_prefix}.254"
-        echo "dhcp-option=6,${ipv4_prefix}.1"
-        echo "dhcp-option=3,${ipv4_prefix}.1"
-        echo "dhcp-authoritative"
+    ipv4_prefix=${1}
+    echo "bind-interfaces"
+    echo "interface=wlan0"
+    echo "address=/config.kvm/${ipv4_prefix}.1"
+    echo "no-hosts"
+    echo "dhcp-range=${ipv4_prefix}.2,${ipv4_prefix}.254"
+    echo "dhcp-option=6,${ipv4_prefix}.1"
+    echo "dhcp-option=3,${ipv4_prefix}.1"
+    echo "dhcp-authoritative"
 }
 
 start() {
     echo "wifi mode: sta"
     ssid=""
     pass=""
+    if [ -e /boot/wifi.ssid ] && [ -e /boot/wifi.pass ]; then
+        echo "Updating WiFi credentials from /boot to /etc/kvm/"
+
+        rm -f /etc/kvm/wifi.ssid /etc/kvm/wifi.pass
+
+        mv /boot/wifi.ssid /etc/kvm/wifi.ssid
+        mv /boot/wifi.pass /etc/kvm/wifi.pass
+
+        chown root:root /etc/kvm/wifi.ssid /etc/kvm/wifi.pass
+        chmod 644 /etc/kvm/wifi.ssid /etc/kvm/wifi.pass
+    fi
     if [ -e /etc/kvm/wifi.ssid ]
     then
         ssid=`cat /etc/kvm/wifi.ssid`
